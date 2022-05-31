@@ -48,7 +48,7 @@ today = datetime.datetime.now().strftime("%Y_%m_%d")
 filename = f'{today}_채팅데이터.csv'
 
 df = None
-flag = False
+flag = True
 
 if os.path.isfile(filename):
     print(filename,"파일이 이미 존재 합니다")
@@ -62,6 +62,7 @@ if os.path.isfile(filename):
     elif (answer == "N"):
         df = pd.read_csv(filename, parse_dates=['timestamp'],infer_datetime_format=True)
         print(filename,"파일 로드 완료")
+        flag = False
     else:        
         print("Y|N 값 중에서 입력하십시요")
         sys.exit(0)
