@@ -98,8 +98,10 @@ if (flag):
 '''
     2. 한글 추출
 '''
-
-df['message'] = df.message.astype('str')
+try:
+    df['message'] = df.message.astype('str')
+except:
+    pass
 print(">>> 한글 추출 시작")
 hangul = re.compile('[가-힣]+').findall("".join(df.message.to_list()))
 print(">>> 한글 추출 완료")
@@ -116,7 +118,9 @@ print(">>> 빈도수 체크 시작")
 cnt = Counter(nouns)
 print(">>> 빈도수 체크 완료")
 target = pd.DataFrame(cnt.most_common(top_k),columns=['keyword','freq']).sort_values(by='freq',ascending=False)
-target.to_csv(f"{filename}_단어별 빈도수.csv",index=False, encoding='utf-8-sig')
+freq_df = pd.DataFrame.from_dict(cnt.items())
+freq_df.columns=['keyword','freq']
+freq_df = freq_df.sort_values(by='freq',ascending=False).to_csv(f"{filename.split('_채팅데이터.csv')[0]}_단어별 빈도수.csv",index=False, encoding='utf-8-sig')
 print(">>> 빈도수 파일 저장 완료")
 
 print(">>> 빈도수 그래프 생성 시작")
